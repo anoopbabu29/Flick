@@ -13,7 +13,13 @@ export default class SettingsScreen extends React.Component {
     return (
       <View>
         <Text style={styles.option}>
-          Name: 
+          First name: Elijah
+        </Text>
+        <Text style={styles.option}>
+          Last name: Elrod
+        </Text>
+        <Text style={styles.option}>
+          Location: Tampa, FL
         </Text>
       </View>
     );
