@@ -7,9 +7,10 @@ import {
  Button,
  KeyboardAvoidingView,
  Image,
+ ImageBackground,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import{LinearGradient} from 'expo';
+
 
 
 export default class App extends React.Component {
@@ -18,12 +19,10 @@ export default class App extends React.Component {
 render() {
 
   return (
-    <View style={styles.container}>
+    <View>
       <Text style={styles.header}> SIGNUP </Text>
 
-      <TextInput
-
-       placeholder="UserName"
+      <TextInput style={styles.login} placeholder="UserName"
        // leftIcon={
        //   <Icon
        //     name='user'
@@ -73,9 +72,9 @@ const styles = StyleSheet.create({
    alignItems:'center'
  },
 
-container: {
-  alignSelf: 'stretch',
-  width: null,
+backgroundcontainer: {
+  alignItems: 'center',
+  flex: 1,
   justifyContent: 'center',
 },
 
@@ -94,5 +93,6 @@ textBoxes: {
 
 
 },
+
 
 });
