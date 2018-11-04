@@ -7,7 +7,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import SignUpScreen from '../screens/SignUpScreen';
+import ViewScreen from '../screens/ViewScreen';
 
 
 
@@ -76,6 +76,35 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+const ViewStack = createStackNavigator({
+  View: ViewScreen,
+});
+
+ViewStack.navigationOptions = {
+  tabBarLabel: 'View',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
+};
+/*
+const LocationStack = createStackNavigator({
+  Location: LocationScreen,
+});
+
+LocationStack.navigationOptions = {
+  tabBarLabel: 'Location',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
+};
+
+*/
 
 
 export default createBottomTabNavigator({
@@ -83,4 +112,6 @@ export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  ViewStack,
+  // LocationStack,
 });

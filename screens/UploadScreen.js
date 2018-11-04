@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 
-export default class LinksScreen extends React.Component {
+export default class UploadScreen extends React.Component {
   static navigationOptions = {
     title: 'Links',
   };
@@ -10,8 +10,9 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <View>
-          <Text> Hello</Text>
+          <Text> Hello </Text>
       </View>
     );
   }
 }
+

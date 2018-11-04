@@ -21,6 +21,9 @@ export default class SettingsScreen extends React.Component {
         <Text style={styles.option}>
           Location: Tampa, FL
         </Text>
+        <Text style={styles.option}>
+          Event Tags: Hackathon, California, Florida, EDM, Trance, Paintball
+        </Text>
       </View>
     );
   }

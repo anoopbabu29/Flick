@@ -1,98 +1,114 @@
-import React from 'react';
-import {
- Text,
- TextInput,
- View,
- StyleSheet,
- Button,
- KeyboardAvoidingView,
- Image,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import{LinearGradient} from 'expo';
+import React, { Component } from 'react';
+import { Alert, Button, TextInput, View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 
+export default class AppScreen extends Component {
+constructor(props) {
+  super(props);
 
-export default class App extends React.Component {
+  this.state = {
+    username: '',
+    password: '',
+  };
+}
 
+onLogin() {
+  const { username, password } = this.state;
+
+  Alert.alert('Credentials', `${username} + ${password}`);
+}
 
 render() {
-
+  const resizeMode = 'center';
   return (
+
     <View style={styles.container}>
-      <Text style={styles.header}> SIGNUP </Text>
+    <Image style={{zIndex:-1,height: 300, width:300, marginTop: 150, marginBottom: 0,}} source={require('../assets/images/A.png')} />
 
       <TextInput
-
-       placeholder="UserName"
-       // leftIcon={
-       //   <Icon
-       //     name='user'
-       //     size={24}
-       //     color='black'
-       //   />
-       // }
-       />
-      <TextInput placeholder="Password" />
-
-      <Button
-         // icon={
-         //   // <Icon
-         //   //   name='arrow-right'
-         //   //   size={15}
-         //   //   color='white'
-         //   // />
-         // }
-         onPress={() => {
-           Alert.alert('You tapped the button!');
-         }}
-         title='BUTTON WITH ICON COMPONENT'
-       />
+        value={this.state.username}
+        onChangeText={(username) => this.setState({ username })}
+        placeholder={'Email'}
+        style={styles.textBox}
+      />
+      <TextInput
+        value={this.state.password}
+        onChangeText={(password) => this.setState({ password })}
+        placeholder={'Password'}
+        secureTextEntry={true}
+        style={styles.textBox}
+      />
 
 
-    </View>
+
+     <View style={styles.ingroup}>
+       <TouchableOpacity>
+         <View style={styles.button}>
+           <Text style={styles.buttonText}>Login</Text>
+         </View>
+       </TouchableOpacity>
+       <TouchableOpacity>
+         <View style={styles.button}>
+           <Text style={styles.buttonText}>Signup</Text>
+         </View>
+       </TouchableOpacity>
+     </View>
+   </View>
   );
 }
 }
+
 const styles = StyleSheet.create({
-   wrapper: {
-   flex: 1,
-   alignItems: 'center' ,
-   justifyContent: 'center',
-   marginTop: 100,
-   width: 200,
-   backgroundColor: 'rgba(0,0,0,0.4)',
-   height: 80,
-   alignItems: 'center',
- },
 
- login:{
-   marginTop: 150,
-   width: 130,
-   backgroundColor: 'rgba(0,0,0,0.2)',
-   height:80,
-   alignItems:'center'
- },
-
+//  header: {
+//    fontSize: 40,
+//    marginTop: 80,
+//    marginBottom:80,
+//    fontWeight: 'bold',
+//  },
 container: {
-  alignSelf: 'stretch',
-  width: null,
-  justifyContent: 'center',
-},
+  flex: 1,
+  alignItems: 'center',
 
-header: {
-  fontSize: 38,
-  color: '#dc143c' ,
+  backgroundColor: '#97D0EC',
+},
+textBox: {
+  width: 200,
+  height: 50,
+  padding: 10,
+  borderWidth: 1,
+  borderColor: 'black',
+  backgroundColor: 'white',
+  borderRadius: 20,
+  marginBottom: 20,
+  fontSize: 20,
+  zIndex: 0
+},
+button: {
+  padding: 12,
+  borderWidth: 1,
+  backgroundColor: 'black',
+  marginBottom: 10,
+  marginLeft: 10,
+  marginRight: 10,
+  borderRadius: 10,
+  height: 50,
+  width: 100,
+  alignItems: 'center',
+  zIndex: 0
+},
+buttonText: {
+  color: 'white',
   fontWeight: 'bold',
-  width: '100%',
-  textAlign: 'center' ,
-  marginTop: 100,
+  fontSize: 20,
+  zIndex: 0
 },
-
-textBoxes: {
- height: 40,
- borderRadius: 45,
-
-
+ingroup: {
+   flex: 1,
+   padding: 0,
+   margin:0,
+   flexDirection: 'row',
+   justifyContent: 'space-between',
+   height: 30,
+   zIndex: 0
 },
-
 });
