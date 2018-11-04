@@ -5,6 +5,10 @@ import AppNavigator from './navigation/AppNavigator';
 import * as Firebase from 'firebase';
 
 var outline = 'black';
+var test1 = false;
+var test2 = false;
+
+
 if (!Firebase.apps.length) {
 Firebase.initializeApp({
   apiKey: "AIzaSyCQ5SvDtODIcow2dDLC9rajI3S0g37Gq5s",
@@ -14,24 +18,28 @@ Firebase.initializeApp({
 })};
 
 export default class App extends React.Component {
+  constructor(props) {
+    super();
+    this.state = {
+      isLoadingComplete: false,
+      loggedIn: false,
+      username: '',
+      password: '',
+    };
+  }
+  
   state = {
     isLoadingComplete: false,
     loggedIn: false,
     username: '',
     password: '',
   };
-  handleLoggedIn = async () => {
-    
-    this.setState(async function(){ 
-      return {loggedIn: this.logIn()};
-    });
-  };
 
-  handleSignedIn = async () => {
-    this.setState(async function(){ 
-      return {loggedIn: this.signIn()};
-    });
-  }
+
+  handleLoggedIn = () => {
+    if(test1 || test2)
+      this.setState({loggedIn: true, isLoadingComplete: true});
+  };
 
   onLogin() {
     const { username, password } = this.state;
@@ -48,23 +56,17 @@ export default class App extends React.Component {
       if(succLogin) {
         //Redirect to Home Page
         outline = 'black';
-        Alert.alert('You logged in!');
         succLogin = true;
-
+        test1 = true;
+        Alert.alert('You are ready to be Logged in!');
       }
-      else{
-        succLogin = this.logInErr();
-      }
-    }).catch(() => this.logInErr());
-  
-    return succLogin;
+    }).catch(() => this.logInErr);
     
   }
   
   logInErr(){
     outline = 'red';
     Alert.alert('Error in Logging in. Please Try Again.');
-    return false;
   }
   
   signIn(){
@@ -75,24 +77,29 @@ export default class App extends React.Component {
     auth.createUserWithEmailAndPassword(email, password).then(function(){
       if(succSignIn) {
         //Redirect to Home Page
-        outline = "black";
-        Alert.alert('You signed up!');
-        this.handleLoggedIn();
-      }
-      else{
-        succSignIn = this.signUpErr();
+        test2 = true;
+        Alert.alert('You are ready to be Signed Up!');
       }
     }).catch(() => this.signUpErr());
-    
-    return succSignIn;
   }
   
   signUpErr(){
     outline = "red";
+    test2 = false
     Alert.alert('Error in Signing Up. Please Try Again.');
-    return false;
   }
   
+  handleChangeUN = username => {
+    this.setState({username});
+    //this.logIn();
+    
+  }
+
+  handleChangePass = password => {
+    this.setState({password});
+    //this.signIn();
+    
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen && !this.state.loggedIn) {
@@ -113,32 +120,35 @@ export default class App extends React.Component {
       
             <TextInput
               value={this.state.username}
-              onChangeText={(username) => this.setState({ username })}
+              onChangeText={this.handleChangeUN}
               placeholder={'Email'}
               style={styles.textBox}
             />
             <TextInput
               value={this.state.password}
-              onChangeText={(password) => this.setState({ password })}
+              onChangeText={this.handleChangePass}
+
               placeholder={'Password'}
               secureTextEntry={true}
               style={styles.textBox}
             />
       
-      
-      
            <View style={styles.ingroup}>
              <TouchableOpacity>
                <View style={styles.button}>
-                 <Text style={styles.buttonText} onPress={this.handleLoggedIn}>Login</Text>
+                 <Text style={styles.buttonText} onPress={this.logIn.bind(this)}>Login</Text>
                </View>
              </TouchableOpacity>
              <TouchableOpacity>
                <View style={styles.button}>
-                 <Text style={styles.buttonText} onPress={this.handleSignedIn}>Signup</Text>
+                 <Text style={styles.buttonText} onPress={this.signIn.bind(this)}>Signup</Text>
                </View>
              </TouchableOpacity>
            </View>
+
+           <View style={styles.sub}>
+              <Text style={styles.buttonText} onPress={this.handleLoggedIn}>Submit</Text>
+            </View>
          </View>
         );
       }
@@ -177,7 +187,7 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true, loggedIn: true });
+    this.setState({ isLoadingComplete: true});
   };
 
   
@@ -210,7 +220,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderWidth: 1,
     backgroundColor: 'black',
-    marginBottom: 10,
+    marginBottom: 0,
     marginLeft: 10,
     marginRight: 10,
     borderRadius: 10,
@@ -234,4 +244,18 @@ const styles = StyleSheet.create({
      height: 30,
      zIndex: 0
   },
+  sub: {
+    position: 'absolute',
+    padding: 12,
+    borderWidth: 1,
+    backgroundColor: 'black',
+    bottom: 100,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 10,
+    height: 50,
+    width: 100,
+    alignItems: 'center',
+    zIndex: 0
+  }
 });
