@@ -37,7 +37,12 @@ export default class App extends React.Component {
 
 
   handleLoggedIn = () => {
-    if(test1 || test2)
+    if(test1)
+      this.setState({loggedIn: true, isLoadingComplete: true});
+  };
+
+  handleSignedUp = () => {
+    if(test2)
       this.setState({loggedIn: true, isLoadingComplete: true});
   };
 
@@ -62,6 +67,7 @@ export default class App extends React.Component {
       }
     }).catch(() => this.logInErr);
     
+    return test1;
   }
   
   logInErr(){
@@ -81,6 +87,8 @@ export default class App extends React.Component {
         Alert.alert('You are ready to be Signed Up!');
       }
     }).catch(() => this.signUpErr());
+
+    return test2;
   }
   
   signUpErr(){
@@ -187,7 +195,7 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true});
+    this.setState({ isLoadingComplete: true, loggedIn: true});
   };
 
   

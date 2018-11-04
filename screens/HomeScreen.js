@@ -1,30 +1,43 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, TouchableOpacity, Text, Image, Animated } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Alert, Button, TextInput, View, StyleSheet, TouchableOpacity, Text, Image, Animated, LayoutAnimation, NativeModules } from 'react-native';
+import Draggable from 'react-native-draggable';
 import {LATITUDE, LONGITUDE, AnimatedRegion} from "react-native-maps";
+
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default class App extends Component {
   static navigationOptions = {
     title: 'Upload',
   };
-
   
   constructor(props) {
     super(props);
     
     this.state = {
-      y: new Animated.Value(0),
-      post: '',
-      tags: [''],
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      routeCoordinates: [],
-      distanceTravelled: 0,
-      prevLatLng: {},
-      coordinate: new AnimatedRegion({
-        latitude: LATITUDE,
-        longitude: LONGITUDE
-      })
+      wOpt: 200,
+      hOpt: 100,
+      imDOpt: 50,
+      isOpt: true,
+      postW: 0,
+      postH: 0,
+      isPost: false,
+      Drag: 0,
     }
+  }
+
+
+  _pOpt = () => {
+    if(this.state.isOpt) {
+      LayoutAnimation.spring();
+      this.setState({postW: 0, postH: 0, isOpt: false, imDOpt: 0})
+    }
+    else {
+      LayoutAnimation.spring();
+      this.setState({postW: 100, postH: 200, isOpt: false, imDOpt: 0})
+    }  
   }
 
   slide = () => {
@@ -41,77 +54,116 @@ export default class App extends Component {
     const { post } = this.state;
   }
 
+  onPost = () => {
+    if(this.state.isOpt) {
+      LayoutAnimation.spring();
+      this.setState({wOpt: 0, hOpt: 0, isOpt: false, imDOpt: 0, postW: 300, postH: 300, isPost:true})
+    }
+    else {
+      LayoutAnimation.spring();
+      this.setState({imDOpt: 50, wOpt: 200, hOpt: 100, isOpt: true, postW: 0, postH: 0, isPost:false})
+    }  
+  }
+
+  onPostText = () => {
+    LayoutAnimation.spring();
+    this.setState({Drag:30,imDOpt:0,wOpt: 0, hOpt: 0, isOpt:false, postW: 0, postH: 0, isPost: false});
+  }
+
+  onCam = () => {
+
+  }
+
   render() {
     return (
-    
-      <View style={styles.container}>
-        <Animated.View style={[styles.slideView, {
-            transform: [
-              {
-                translateY: this.state.y
-              }
-            ]
-          }]}>
-          <TextInput
-          value={this.state.username}
-          onChangeText={(username) => this.setState({ username })}
-          style={styles.textBox}
-          placeholder="Post a status"
-        />
-        </Animated.View>
-        
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container} >
+        <View style={[styles.box, {width: this.state.wOpt, height: this.state.hOpt}]}>
+          <TouchableOpacity onPress={this.onPost}>
+            {
+            // <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from 
+            // <a>href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed 
+            // by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 
+            // 3.0" target="_blank">CC 3.0 BY</a></div>
+            }
+            <Image source={require('./post.png')} style={[styles.image, {height: this.state.imDOpt, width: this.state.imDOpt}]}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onCam}>
+            {
+            // <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a 
+            // href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by 
+            // <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" 
+            // target="_blank">CC 3.0 BY</a></div>
+            }
+            <Image source={require('./photograph.png')} style={[styles.image, {height: this.state.imDOpt, width: this.state.imDOpt}]}/>
+          </TouchableOpacity>
+        </View>
+        <View style={(this.state.isPost) ? [styles.box, {width: 300, height: 400, alignItems:'center',
+    justifyContent: 'center'}] : {}}>
+          <View style={{height: this.state.postH, width: this.state.postW}}>
+            <TextInput
+              value={this.state.username}
+              onChangeText={(username) => this.setState({ username })}
+              style= {(this.state.isPost) ? styles.textBox : {}}
+              placeholder="Post a status"
+              multiline={true}
+            />
+            
+            <TouchableOpacity onPress={this.onPostText}>
+              <View style={(this.state.isPost) ? styles.button : {}}>
+                <Text style= {(this.state.isPost) ? styles.buttonText : {}}>Post a Flick</Text>
+              </View>
+            </TouchableOpacity>
 
-        {/* {
-          // <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from 
-          // <a>href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed 
-          // by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 
-          // 3.0" target="_blank">CC 3.0 BY</a></div>
-          }
-          <Image source={require('../assets/images/demoPic.jpg')} style={styles.image}/>
-          {
-          // <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a 
-          // href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by 
-          // <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" 
-          // target="_blank">CC 3.0 BY</a></div>
-          }
-          <Image source={require('../assets/images/camera.png')} style={styles.image}/> */}
+            <TouchableOpacity onPress={this.onPost}>
+              <View style={(this.state.isPost) ? styles.button : {}}>
+                <Text style= {(this.state.isPost) ? styles.buttonText : {}}>Cancel</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
 
+          <Draggable renderSize={this.state.Drag} renderColor={'black'} reverse={true} renderShape={'circle'} renderText={'F'} style={{color:'blue', fontSize:20, height: 100, width: 100}} offsetX={0} offsetY={0} z={-1} x={0} y={0}>
+
+          </Draggable>
+
+        </View>
         
-       <TouchableOpacity>
-         <View style={styles.button}>
-           <Text style= {styles.buttonText} onPress={()=>{}}>Post a Flick</Text>
-         </View>
-       </TouchableOpacity>
       </View>
-      
+      </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = StyleSheet.create({
-
   container: {
-    flex: 1,
+    flex: 2,
     alignItems: 'center',
-
-    backgroundColor: '#97D0EC',
+    justifyContent: 'center',
+    backgroundColor: '#97D0EC'
+  },
+  box: {
+    height: 200,
+    width: 200,
+    borderRadius: 110,
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 50,
+    height: 50,
+    alignItems:'center',
+    justifyContent: 'center',
+    marginLeft: 20,
   },
   textBox: {
-    marginTop: 200,
-    width: 300,
-    height: 100,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    marginBottom: 20,
-    fontSize: 20,
-  },
-  textBox2: {
-    marginTop: 0,
+    marginTop: 25,
     width: 200,
-    height: 50,
+    height: 125,
     padding: 10,
     borderWidth: 1,
     borderColor: 'black',
@@ -119,6 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 20,
     fontSize: 20,
+    alignSelf: 'center',
   },
   button: {
     padding: 12,
@@ -126,11 +179,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     marginBottom: 10,
     borderRadius: 10,
+    width: 200,
+    alignSelf: 'center'
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 15,
   },
   slideView:{
 

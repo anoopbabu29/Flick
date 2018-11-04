@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19004,
-  "expoServerPort": 19005,
-  "packagerPort": 19006,
-  "packagerPid": 92513,
-  "expoServerNgrokUrl": "https://wm-b2a.anonymous.flick.exp.direct",
-  "packagerNgrokUrl": "https://packager.wm-b2a.anonymous.flick.exp.direct",
-  "ngrokPid": 92541
+  "devToolsPort": 19002,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
